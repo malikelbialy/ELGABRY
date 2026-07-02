@@ -18,6 +18,7 @@
     --ink:#2b1810;
     --green-wa:#25d366;
     --red:#c0392b;
+    --blue:#2c7be5;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -39,8 +40,8 @@
   .logo-badge-img{width:50px;height:50px;border-radius:50%;object-fit:cover;box-shadow:0 3px 10px rgba(166,30,77,.35);flex-shrink:0;border:2px solid var(--gold);}
   .logo-text{font-family:'Cairo',sans-serif;font-weight:900;font-size:22px;color:var(--pink-dark);}
   .logo-text span{color:var(--gold);}
-  .nav-links{display:flex;gap:26px;align-items:center;flex-wrap:wrap;}
-  .nav-links a{font-weight:700;color:var(--choc);font-size:15px;transition:.2s;}
+  .nav-links{display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
+  .nav-links a{font-weight:700;color:var(--choc);font-size:14.5px;transition:.2s;}
   .nav-links a:hover{color:var(--pink);}
   .nav-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
   .icon-btn{position:relative;width:42px;height:42px;border-radius:50%;background:var(--pink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;transition:.2s;}
@@ -136,6 +137,34 @@
   .wa-btn{background:var(--green-wa);color:#fff;padding:13px 22px;border-radius:30px;font-weight:800;display:flex;align-items:center;gap:8px;font-size:14.5px;transition:.2s;}
   .wa-btn:hover{background:#1ebd59;transform:translateY(-2px);}
 
+  /* ===== TRACK ORDER ===== */
+  .track-box{max-width:640px;margin:0 auto;}
+  .track-search{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px;}
+  .track-search input{flex:1;min-width:200px;padding:14px 16px;border-radius:12px;border:1.5px solid #e9d8b9;font-family:inherit;font-size:15px;background:#fff;}
+  .track-search input:focus{outline:2px solid var(--pink);border-color:var(--pink);}
+  .track-order-card{background:#fff;border-radius:16px;padding:20px 22px;margin-bottom:16px;border:1px solid #f1e3c8;box-shadow:0 4px 14px rgba(59,36,21,.06);}
+  .track-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  .track-top b{color:var(--choc);font-size:15px;}
+  .status-badge{font-size:12px;font-weight:800;padding:6px 14px;border-radius:14px;}
+  .status-badge.st-prep{background:#fff3d6;color:#a67c00;}
+  .status-badge.st-ready{background:#dbe9ff;color:var(--blue);}
+  .status-badge.st-done{background:#e3f2e6;color:#2c7a3d;}
+  .status-steps{display:flex;align-items:center;gap:6px;margin:14px 0;}
+  .status-step{flex:1;height:6px;border-radius:4px;background:#eee0c8;}
+  .status-step.on{background:var(--pink);}
+  .track-items{font-size:13px;color:#8a7563;line-height:1.8;margin-bottom:8px;}
+  .track-meta{font-size:12.5px;color:#9c8a7a;}
+  .track-empty{text-align:center;color:#bba88f;padding:30px 10px;}
+  .rate-box{margin-top:14px;padding-top:14px;border-top:1.5px dashed #e9d8b9;}
+  .rate-box p{font-size:13.5px;color:var(--choc);font-weight:800;margin-bottom:8px;}
+  .stars{display:flex;gap:4px;font-size:26px;cursor:pointer;margin-bottom:10px;}
+  .stars span{color:#e0d3ba;transition:.15s;}
+  .stars span.on{color:var(--gold);}
+  .rate-box textarea{width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid #e9d8b9;font-family:inherit;font-size:13.5px;background:#fffdf7;margin-bottom:10px;}
+  .rate-submit{background:var(--pink);color:#fff;padding:9px 20px;border-radius:10px;font-weight:800;font-size:13.5px;}
+  .rate-submit:hover{background:var(--pink-dark);}
+  .rated-display{font-size:14px;color:var(--gold);font-weight:800;}
+
   footer{background:var(--ink);color:#cdb89c;padding:40px 24px 20px;text-align:center;}
   footer .f-logo{font-family:'Cairo',sans-serif;font-weight:900;color:var(--gold-light);font-size:20px;margin-bottom:10px;}
   footer p{font-size:13.5px;color:#a7917a;max-width:500px;margin:0 auto 14px;}
@@ -189,6 +218,14 @@
   .order-summary-box{background:#fff8ee;border:1.5px dashed var(--gold);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13.5px;color:#6b5640;}
   .blocked-box{background:#fdeaea;border:1.5px solid var(--red);border-radius:12px;padding:14px;margin-bottom:14px;color:var(--red);font-weight:800;font-size:14px;display:none;text-align:center;}
   .blocked-box.show{display:block;}
+  .coupon-row{display:flex;gap:8px;margin-bottom:14px;}
+  .coupon-row input{flex:1;padding:12px 14px;border-radius:10px;border:1.5px solid #e9d8b9;font-family:inherit;font-size:14px;background:#fffdf7;text-transform:uppercase;}
+  .coupon-apply-btn{background:var(--choc);color:var(--gold-light);padding:0 18px;border-radius:10px;font-weight:800;font-size:13.5px;}
+  .coupon-apply-btn:hover{background:var(--pink-dark);color:#fff;}
+  .coupon-msg{font-size:12.5px;font-weight:700;margin-bottom:10px;display:none;}
+  .coupon-msg.ok{display:block;color:#2c7a3d;}
+  .coupon-msg.bad{display:block;color:var(--red);}
+  .discount-line{display:flex;justify-content:space-between;font-size:13px;color:#2c7a3d;font-weight:700;margin-top:4px;}
 
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--choc);color:var(--gold-light);padding:13px 26px;border-radius:30px;font-weight:800;font-size:14px;z-index:900;transition:.3s;box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:90vw;text-align:center;}
   .toast.show{transform:translateX(-50%) translateY(0);}
@@ -207,8 +244,6 @@
 <body>
 
 <div class="site-loader" id="siteLoader"><div class="ld-spin"></div><span>بنجهزلك المحمصة...</span></div>
-
-<!-- بانر تشخيص: بيظهر تلقائيًا لو في مشكلة اتصال بقاعدة البيانات (RLS / صلاحيات) -->
 <div class="diag-banner" id="diagBanner"></div>
 
 <!-- ===== NAVBAR ===== -->
@@ -219,6 +254,7 @@
   </div>
   <div class="nav-links">
     <a href="#products">المنتجات</a>
+    <a href="#track">تتبع طلبك</a>
     <a href="#about">ليه إحنا</a>
     <a href="#branches">الفرع</a>
     <a href="#contact">تواصل معانا</a>
@@ -294,6 +330,22 @@
   </div>
 </section>
 
+<!-- ===== TRACK ORDER ===== -->
+<section id="track">
+  <div class="sec-head reveal">
+    <span class="sec-eyebrow">تتبع الطلب</span>
+    <h2>طلبك فين؟ 🔍</h2>
+    <p>دخل رقم موبايلك وشوف كل طلباتك وحالتها لحظة بلحظة</p>
+  </div>
+  <div class="track-box reveal">
+    <div class="track-search">
+      <input type="tel" id="trackPhone" placeholder="01XXXXXXXXX" maxlength="11">
+      <button class="btn btn-primary" id="trackBtn">بحث 🔍</button>
+    </div>
+    <div id="trackResults"></div>
+  </div>
+</section>
+
 <!-- ===== BRANCH ===== -->
 <section id="branches">
   <div class="branches-wrap reveal">
@@ -325,6 +377,7 @@
   <p>تسالي بطعم الزمن الجميل – مكسرات، لب، وشوكولاتة بأجود خامة</p>
   <div class="f-links">
     <a href="#products">المنتجات</a>
+    <a href="#track">تتبع طلبك</a>
     <a href="#branches">الفرع</a>
     <a href="#contact">تواصل معانا</a>
     <a class="admin-link" href="dashboard.html" target="_blank" title="لوحة تحكم الإدارة">⚙️ الإدارة</a>
@@ -350,6 +403,11 @@
     <h3>🧾 بيانات الطلب</h3>
     <div class="blocked-box" id="blockedBox">عذراً، الرقم ده موقوف عندنا حاليًا. لو فيه أي استفسار كلمنا على واتساب 🙏</div>
     <div class="order-summary-box" id="checkoutSummary"></div>
+    <div class="coupon-row">
+      <input type="text" id="couponInput" placeholder="🎟️ عندك كود خصم؟">
+      <button class="coupon-apply-btn" id="couponApplyBtn">تطبيق</button>
+    </div>
+    <div class="coupon-msg" id="couponMsg"></div>
     <div class="field">
       <label>الاسم</label>
       <input type="text" id="custName" placeholder="اكتب اسمك">
@@ -394,18 +452,8 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
 
 /* ============================================================
    ⚠️ إعدادات قاعدة البيانات المطلوبة (Supabase SQL Editor)
-   لازم تتشغل مرة واحدة في Supabase > SQL Editor عشان
-   الطلبات تتسجل والمنتجات تظهر صح (RLS Policies):
-
-   alter table public.orders enable row level security;
-   create policy "anon insert orders" on public.orders for insert to anon with check (true);
-   create policy "anon select orders" on public.orders for select to anon using (true);
-
-   alter table public.blacklist enable row level security;
-   create policy "anon read blacklist" on public.blacklist for select to anon using (true);
-
-   alter table public.products enable row level security;
-   create policy "anon read products" on public.products for select to anon using (true);
+   لازم تتشغل مرة واحدة عشان كل الميزات الجديدة تشتغل. شوف
+   ملف التعليمات اللي هبعتهولك، أو خد الأوامر من dashboard.html
    ============================================================ */
 
 /* ============================================================
@@ -473,12 +521,15 @@ const DEFAULT_PRODUCTS = [
 
 const GRAMS = [250, 500, 1000];
 const LAB_GRAMS = [50, 100, 250, 500];
+const STATUS_LABELS = { prep: 'قيد التحضير', ready: 'جاهز', done: 'تم التسليم' };
+const STATUS_MAP = { 'قيد التحضير': 'prep', 'جاهز': 'ready', 'تم التسليم': 'done' };
 
 let PRODUCTS = [];
 let cart = [];
 let currentCat = 'all';
 let selectedGrams = {};
 let selectedQty = {};
+let appliedCoupon = null;
 
 function gramsForCat(cat) { return cat === 'lab' ? LAB_GRAMS : GRAMS; }
 function defaultGramForCat(cat) { return cat === 'lab' ? LAB_GRAMS[0] : GRAMS[1]; }
@@ -494,17 +545,20 @@ function showDiagBanner(msg) {
 function hideDiagBanner() { document.getElementById('diagBanner').classList.remove('show'); }
 
 /* ============================================================
-   SUPABASE FUNCTIONS
+   SUPABASE: PRODUCTS
    ============================================================ */
 async function loadProductsFromSupabase() {
   try {
-    const { data, error } = await supabaseClient.from('products').select('*').order('created_at', { ascending: true });
+    const { data, error } = await supabaseClient.from('products').select('*').order('sort_order', { ascending: true });
     if (error) { console.error('❌ خطأ في تحميل المنتجات:', error); PRODUCTS = DEFAULT_PRODUCTS; return; }
-    if (data && data.length > 0) { PRODUCTS = data; return; }
+    if (data && data.length > 0) { PRODUCTS = data.filter(p => !p.hidden); return; }
   } catch (e) { console.error('❌ خطأ غير متوقع في تحميل المنتجات:', e); }
   PRODUCTS = DEFAULT_PRODUCTS;
 }
 
+/* ============================================================
+   SUPABASE: ORDERS
+   ============================================================ */
 async function saveOrderToSupabase(order) {
   try {
     const { data, error } = await supabaseClient.from('orders').insert([{
@@ -515,17 +569,19 @@ async function saveOrderToSupabase(order) {
       branch: 'طنطا – الجلاء – الموقف القديم',
       address: order.address || '',
       total: order.total,
-      items: order.items
+      items: order.items,
+      status: 'قيد التحضير',
+      coupon_code: order.coupon_code || null,
+      discount: order.discount || 0
     }]).select();
 
     if (error) {
       console.error('❌ فشل حفظ الطلب:', error);
-      const isPermission = /row-level security|permission|policy/i.test(error.message || '');
-      if (isPermission) showDiagBanner('في مشكلة صلاحيات في قاعدة البيانات (RLS) - الطلبات مش بتتسجل.');
+      const isPermission = /row-level security|permission|policy|column/i.test(error.message || '');
+      if (isPermission) showDiagBanner('في مشكلة صلاحيات/أعمدة في قاعدة البيانات - راجع تعليمات SQL.');
       return { success: false, message: error.message || 'فشل الاتصال بقاعدة البيانات' };
     }
     if (!data || data.length === 0) {
-      console.error('❌ الطلب اترفض بصمت - غالبًا RLS');
       showDiagBanner('الطلبات مش بتتسجل فعليًا - في مشكلة صلاحيات (RLS).');
       return { success: false, message: 'الطلب اترفض من قاعدة البيانات (تحقق من صلاحيات RLS)' };
     }
@@ -543,6 +599,49 @@ async function loadBlacklistFromSupabase() {
     if (error) { console.error('❌ خطأ في تحميل القائمة السوداء:', error); return []; }
     return data ? data.map(b => b.phone) : [];
   } catch (e) { console.error('❌ خطأ غير متوقع في تحميل القائمة السوداء:', e); return []; }
+}
+
+async function loadOrdersByPhone(phone) {
+  try {
+    const { data, error } = await supabaseClient.from('orders').select('*').eq('phone', phone).order('created_at', { ascending: false });
+    if (error) { console.error('❌ خطأ في تحميل طلبات العميل:', error); return null; }
+    return data || [];
+  } catch (e) { console.error('❌ خطأ غير متوقع:', e); return null; }
+}
+
+async function submitRating(orderId, rating, comment) {
+  try {
+    const { error } = await supabaseClient.from('orders').update({ rating, rating_comment: comment }).eq('id', orderId);
+    return !error;
+  } catch (e) { console.error('❌ خطأ في إرسال التقييم:', e); return false; }
+}
+
+/* ============================================================
+   COUPONS
+   ============================================================ */
+async function validateCoupon(code) {
+  try {
+    const { data, error } = await supabaseClient.from('coupons').select('*').eq('code', code.toUpperCase()).eq('active', true).maybeSingle();
+    if (error || !data) return null;
+    return data;
+  } catch (e) { console.error('❌ خطأ في التحقق من الكوبون:', e); return null; }
+}
+
+function computeDiscount(total, coupon) {
+  if (!coupon) return 0;
+  if (coupon.type === 'percent') return Math.round(total * (coupon.value / 100));
+  return Math.min(coupon.value, total);
+}
+
+/* ============================================================
+   AUTO-CLEANUP: مسح الطلبات الأقدم من 12 ساعة (best-effort،
+   بيشتغل لما حد يفتح الموقع أو الداشبورد - مش Cron حقيقي)
+   ============================================================ */
+async function cleanupOldOrders() {
+  try {
+    const cutoff = new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString();
+    await supabaseClient.from('orders').delete().lt('created_at', cutoff);
+  } catch (e) { console.error('❌ خطأ في مسح الطلبات القديمة:', e); }
 }
 
 /* ============================================================
@@ -589,11 +688,11 @@ function renderProducts() {
     card.innerHTML = `
       <div class="pcard-img">
         ${p.tag ? `<span class="pcard-tag">${p.tag}</span>` : ''}
-        <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}'">
+        <img src="${p.img || p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}'">
       </div>
       <div class="pcard-body">
         <h3>${p.name}</h3>
-        <div class="desc">${p.desc || ''}</div>
+        <div class="desc">${p.desc || p.description || ''}</div>
         ${controlsBlock}
         ${priceBlock}
         <button class="add-btn" data-pid="${p.id}">أضف للسلة 🛒</button>
@@ -636,11 +735,11 @@ function renderProducts() {
       let item;
       if (prod.type === 'piece') {
         const qty = selectedQty[pid] || 1;
-        item = { id: prod.id, name: prod.name, mode: 'piece', unitLabel: 'حبة', unitQty: qty, price: Math.round(prod.price * qty), img: prod.img };
+        item = { id: prod.id, name: prod.name, mode: 'piece', unitLabel: 'حبة', unitQty: qty, price: Math.round(prod.price * qty), img: prod.img || prod.image };
       } else {
         const g = selectedGrams[pid];
         const price = Math.round(prod.price * g / 100);
-        item = { id: prod.id, name: prod.name, mode: 'gram', unitLabel: (g >= 1000 ? '1 كيلو' : g + ' جم'), unitQty: g, price, img: prod.img };
+        item = { id: prod.id, name: prod.name, mode: 'gram', unitLabel: (g >= 1000 ? '1 كيلو' : g + ' جم'), unitQty: g, price, img: prod.img || prod.image };
       }
       addToCart(item);
       btn.textContent = 'اتضاف ✅';
@@ -703,13 +802,38 @@ function openDrawer() { document.getElementById('cartDrawer').classList.add('sho
 function closeDrawer() { document.getElementById('cartDrawer').classList.remove('show'); document.getElementById('overlay').classList.remove('show'); }
 
 /* ===================== CHECKOUT ===================== */
+function cartSubtotal() { return cart.reduce((s, c) => s + c.price * (c.qty || 1), 0); }
+
+function refreshCheckoutSummary() {
+  const subtotal = cartSubtotal();
+  const discount = appliedCoupon ? computeDiscount(subtotal, appliedCoupon) : 0;
+  const finalTotal = subtotal - discount;
+  let html = `عدد الأصناف: ${cart.length} — الإجمالي: <b>${subtotal} جنيه</b>`;
+  if (discount > 0) html += `<div class="discount-line"><span>🎟️ خصم (${appliedCoupon.code})</span><span>-${discount} جنيه</span></div><div class="discount-line" style="color:var(--pink-dark);font-size:14px;"><span>الصافي</span><span>${finalTotal} جنيه</span></div>`;
+  document.getElementById('checkoutSummary').innerHTML = html;
+}
+
 document.getElementById('checkoutBtn').addEventListener('click', () => {
   if (cart.length === 0) { showToast('السلة فاضية!'); return; }
   closeDrawer();
   document.getElementById('blockedBox').classList.remove('show');
-  const total = cart.reduce((s, c) => s + c.price * (c.qty || 1), 0);
-  document.getElementById('checkoutSummary').innerHTML = `عدد الأصناف: ${cart.length} — الإجمالي: <b>${total} جنيه</b>`;
+  document.getElementById('couponMsg').classList.remove('show', 'ok', 'bad');
+  document.getElementById('couponInput').value = '';
+  appliedCoupon = null;
+  refreshCheckoutSummary();
   openModal('checkoutModal');
+});
+
+document.getElementById('couponApplyBtn').addEventListener('click', async () => {
+  const code = document.getElementById('couponInput').value.trim();
+  const msgEl = document.getElementById('couponMsg');
+  if (!code) { msgEl.className = 'coupon-msg bad'; msgEl.textContent = 'اكتب كود الكوبون الأول'; return; }
+  const coupon = await validateCoupon(code);
+  if (!coupon) { msgEl.className = 'coupon-msg bad'; msgEl.textContent = '❌ الكوبون غير صحيح أو منتهي'; appliedCoupon = null; refreshCheckoutSummary(); return; }
+  appliedCoupon = coupon;
+  msgEl.className = 'coupon-msg ok';
+  msgEl.textContent = coupon.type === 'percent' ? `✅ اتطبق خصم ${coupon.value}%` : `✅ اتطبق خصم ${coupon.value} جنيه`;
+  refreshCheckoutSummary();
 });
 
 let fulfillment = 'pickup';
@@ -760,11 +884,16 @@ document.getElementById('confirmOrderBtn').addEventListener('click', async () =>
     return;
   }
 
+  const subtotal = cartSubtotal();
+  const discount = appliedCoupon ? computeDiscount(subtotal, appliedCoupon) : 0;
+
   const order = {
     id: 'ord_' + Date.now(),
     name, phone, fulfillment, address,
     items: cart.map(c => ({ name: c.name, unitLabel: c.unitLabel, qty: c.qty || 1, price: c.price })),
-    total: cart.reduce((s, c) => s + c.price * (c.qty || 1), 0),
+    total: subtotal - discount,
+    coupon_code: appliedCoupon ? appliedCoupon.code : null,
+    discount,
     created_at: new Date().toISOString()
   };
 
@@ -774,6 +903,7 @@ document.getElementById('confirmOrderBtn').addEventListener('click', async () =>
 
   if (result.success) {
     cart = [];
+    appliedCoupon = null;
     renderCart();
     closeModal('checkoutModal');
     document.getElementById('custName').value = '';
@@ -794,6 +924,90 @@ document.querySelectorAll('.modal-close').forEach(btn => {
 document.querySelectorAll('.modal-overlay').forEach(ov => {
   ov.addEventListener('click', e => { if (e.target === ov) closeModal(ov.id); });
 });
+
+/* ===================== TRACK ORDER ===================== */
+function statusStepIndex(status) {
+  const key = STATUS_MAP[status] || 'prep';
+  return key === 'prep' ? 1 : key === 'ready' ? 2 : 3;
+}
+
+function renderTrackResults(orders) {
+  const box = document.getElementById('trackResults');
+  if (!orders || orders.length === 0) {
+    box.innerHTML = '<div class="track-empty">مفيش طلبات بالرقم ده 🤔<br>تأكد من الرقم أو اطلب لأول مرة!</div>';
+    return;
+  }
+  box.innerHTML = orders.map(o => {
+    const statusKey = STATUS_MAP[o.status] || 'prep';
+    const step = statusStepIndex(o.status);
+    const badgeClass = statusKey === 'prep' ? 'st-prep' : statusKey === 'ready' ? 'st-ready' : 'st-done';
+    const itemsTxt = o.items ? o.items.map(it => `${it.name} (${it.unitLabel} × ${it.qty})`).join('، ') : '-';
+    let rateHtml = '';
+    if (statusKey === 'done') {
+      if (o.rating) {
+        rateHtml = `<div class="rate-box"><span class="rated-display">${'⭐'.repeat(o.rating)} شكراً على تقييمك!</span></div>`;
+      } else {
+        rateHtml = `
+          <div class="rate-box" data-order="${o.id}">
+            <p>قيّم طلبك ⭐</p>
+            <div class="stars" data-order="${o.id}">
+              ${[1,2,3,4,5].map(n => `<span data-val="${n}">★</span>`).join('')}
+            </div>
+            <textarea rows="2" placeholder="تعليق (اختياري)" data-comment="${o.id}"></textarea>
+            <button class="rate-submit" data-submit="${o.id}">إرسال التقييم</button>
+          </div>`;
+      }
+    }
+    return `
+      <div class="track-order-card">
+        <div class="track-top">
+          <b>طلب #${(o.id || '').toString().slice(-6)}</b>
+          <span class="status-badge ${badgeClass}">${o.status || 'قيد التحضير'}</span>
+        </div>
+        <div class="status-steps">
+          ${[1,2,3].map(n => `<div class="status-step ${n <= step ? 'on' : ''}"></div>`).join('')}
+        </div>
+        <div class="track-items">${itemsTxt}</div>
+        <div class="track-meta">💰 ${o.total} جنيه &nbsp;|&nbsp; 🕒 ${new Date(o.created_at).toLocaleString('ar-EG')}</div>
+        ${rateHtml}
+      </div>
+    `;
+  }).join('');
+
+  box.querySelectorAll('.stars').forEach(starsEl => {
+    starsEl.addEventListener('click', e => {
+      const val = e.target.dataset.val;
+      if (!val) return;
+      starsEl.dataset.selected = val;
+      starsEl.querySelectorAll('span').forEach(s => s.classList.toggle('on', parseInt(s.dataset.val) <= parseInt(val)));
+    });
+  });
+
+  box.querySelectorAll('[data-submit]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const orderId = btn.dataset.submit;
+      const starsEl = box.querySelector(`.stars[data-order="${orderId}"]`);
+      const rating = parseInt(starsEl.dataset.selected || '0');
+      if (!rating) { showToast('اختار عدد النجوم الأول ⭐'); return; }
+      const comment = box.querySelector(`[data-comment="${orderId}"]`).value.trim();
+      btn.textContent = 'جاري الإرسال...';
+      const ok = await submitRating(orderId, rating, comment);
+      if (ok) { showToast('✅ شكراً على تقييمك!'); doTrackSearch(); }
+      else { showToast('حصل خطأ، جرب تاني', true); btn.textContent = 'إرسال التقييم'; }
+    });
+  });
+}
+
+async function doTrackSearch() {
+  const phone = document.getElementById('trackPhone').value.trim();
+  if (!validatePhone(phone)) { showToast('اكتب رقم صحيح يبدأ بـ 01'); return; }
+  document.getElementById('trackResults').innerHTML = '<div class="track-empty">بندور على طلباتك...</div>';
+  const orders = await loadOrdersByPhone(phone);
+  renderTrackResults(orders);
+}
+
+document.getElementById('trackBtn').addEventListener('click', doTrackSearch);
+document.getElementById('trackPhone').addEventListener('keydown', e => { if (e.key === 'Enter') doTrackSearch(); });
 
 /* ===================== TOAST ===================== */
 function showToast(msg, isError) {
@@ -818,6 +1032,8 @@ function setupReveal() { document.querySelectorAll('.reveal').forEach(el => obse
   renderCart();
   setupReveal();
   document.getElementById('siteLoader').classList.add('hide');
+  cleanupOldOrders();
+  setInterval(cleanupOldOrders, 30 * 60 * 1000); // كل 30 دقيقة لو الموقع فاضل مفتوح
 
   console.log('🚀 محمصة الجابري - موقع الطلب');
   console.log('🍫 ' + PRODUCTS.length + ' منتج متوفر');
