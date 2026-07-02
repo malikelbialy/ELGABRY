@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>محمصة الجابري - الجلاء</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --pink:#d6336c;
+    --pink-dark:#a61e4d;
+    --gold:#d4a13d;
+    --gold-light:#f3d899;
+    --cream:#fff8ee;
+    --choc:#3b2415;
+    --ink:#2b1810;
+    --green-wa:#25d366;
+    --red:#c0392b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Tajawal','Cairo',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;}
+  h1,h2,h3,h4{font-family:'Cairo',sans-serif;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;}
+
+  .site-loader{position:fixed;inset:0;background:var(--cream);z-index:2000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+  .site-loader .ld-spin{width:54px;height:54px;border-radius:50%;border:5px solid var(--gold-light);border-top-color:var(--pink);animation:spin .9s linear infinite;}
+  .site-loader span{font-weight:800;color:var(--choc);font-family:'Cairo',sans-serif;}
+  .site-loader.hide{display:none;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .navbar{position:sticky;top:0;z-index:200;background:linear-gradient(180deg, rgba(255,248,238,.97), rgba(255,248,238,.9));backdrop-filter:blur(8px);border-bottom:2px solid var(--gold-light);display:flex;align-items:center;justify-content:space-between;padding:10px 28px;flex-wrap:wrap;gap:10px;}
+  .logo-wrap{display:flex;align-items:center;gap:10px;}
+  .logo-badge-img{width:50px;height:50px;border-radius:50%;object-fit:cover;box-shadow:0 3px 10px rgba(166,30,77,.35);flex-shrink:0;border:2px solid var(--gold);}
+  .logo-text{font-family:'Cairo',sans-serif;font-weight:900;font-size:22px;color:var(--pink-dark);}
+  .logo-text span{color:var(--gold);}
+  .nav-links{display:flex;gap:26px;align-items:center;flex-wrap:wrap;}
+  .nav-links a{font-weight:700;color:var(--choc);font-size:15px;transition:.2s;}
+  .nav-links a:hover{color:var(--pink);}
+  .nav-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .icon-btn{position:relative;width:42px;height:42px;border-radius:50%;background:var(--pink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;transition:.2s;}
+  .icon-btn:hover{background:var(--pink-dark);transform:scale(1.06);}
+  .cart-count{position:absolute;top:-4px;left:-4px;background:var(--gold);color:#3b2415;font-size:11px;font-weight:900;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--cream);}
+  @media(max-width:880px){.nav-links{display:none;}}
+
+  .hero{position:relative;background:linear-gradient(135deg, var(--pink-dark) 0%, var(--pink) 55%, #e8597f 100%);min-height:88vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:60px 20px;}
+  .hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle, rgba(255,255,255,.12) 1.5px, transparent 1.5px);background-size:26px 26px;opacity:.5;}
+  .float-nut{position:absolute;border-radius:50%;object-fit:cover;box-shadow:0 10px 30px rgba(0,0,0,.35);animation:floaty 7s ease-in-out infinite;border:3px solid rgba(255,255,255,.5);}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-22px) rotate(8deg);}}
+  .n1{width:90px;height:90px;top:12%;right:8%;animation-delay:0s;}
+  .n2{width:60px;height:60px;top:62%;right:14%;animation-delay:1.2s;}
+  .n3{width:75px;height:75px;top:20%;left:7%;animation-delay:.6s;}
+  .n4{width:55px;height:55px;top:68%;left:11%;animation-delay:1.8s;}
+  @media(max-width:700px){.n1,.n2,.n3,.n4{opacity:.55;transform:scale(.7);}}
+  .hero-content{position:relative;z-index:5;text-align:center;max-width:780px;}
+  .hero-eyebrow{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;padding:7px 18px;border-radius:30px;font-size:14px;font-weight:700;margin-bottom:22px;}
+  .hero h1{font-size:clamp(34px,6vw,62px);color:#fff;font-weight:900;line-height:1.25;text-shadow:0 4px 18px rgba(0,0,0,.25);margin-bottom:18px;}
+  .hero h1 em{font-style:normal;color:var(--gold-light);}
+  .hero p{color:#ffe3ee;font-size:18px;font-weight:500;margin-bottom:34px;}
+  .drum-wrap{margin:0 auto 36px;width:150px;height:150px;position:relative;}
+  .drum{width:100%;height:100%;border-radius:50%;background:conic-gradient(from 0deg, var(--gold-light), var(--gold), var(--pink-dark), var(--gold), var(--gold-light));animation:spin 5s linear infinite;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(255,255,255,.25), 0 15px 40px rgba(0,0,0,.4);}
+  .drum-inner{width:78%;height:78%;border-radius:50%;background:var(--choc);display:flex;align-items:center;justify-content:center;font-size:38px;}
+  .hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:15px 32px;border-radius:30px;font-weight:800;font-size:16px;transition:.25s;display:inline-flex;align-items:center;gap:8px;}
+  .btn-primary{background:var(--gold);color:var(--choc);}
+  .btn-primary:hover{background:var(--gold-light);transform:translateY(-2px);}
+  .btn-outline{background:transparent;border:2px solid #fff;color:#fff;}
+  .btn-outline:hover{background:rgba(255,255,255,.15);}
+
+  .marquee-bar{background:var(--choc);overflow:hidden;white-space:nowrap;padding:13px 0;border-top:3px solid var(--gold);border-bottom:3px solid var(--gold);}
+  .marquee-track{display:inline-block;animation:marquee 22s linear infinite;}
+  .marquee-track span{display:inline-block;padding:0 28px;color:var(--gold-light);font-weight:800;font-size:17px;font-family:'Cairo',sans-serif;}
+  @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  section{padding:70px 24px;max-width:1180px;margin:0 auto;}
+  .sec-head{text-align:center;margin-bottom:44px;}
+  .sec-eyebrow{color:var(--pink);font-weight:800;font-size:14px;letter-spacing:1px;}
+  .sec-head h2{font-size:clamp(26px,4vw,38px);color:var(--choc);font-weight:900;margin-top:8px;}
+  .sec-head p{color:#8a7563;margin-top:10px;font-size:16px;}
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.show{opacity:1;transform:translateY(0);}
+
+  .tabs{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+  .tab-btn{padding:10px 22px;border-radius:24px;background:#fff;border:2px solid var(--gold-light);color:var(--choc);font-weight:800;font-size:14px;transition:.2s;}
+  .tab-btn.active,.tab-btn:hover{background:var(--pink);color:#fff;border-color:var(--pink);}
+
+  .products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;}
+  .pcard{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 6px 20px rgba(59,36,21,.08);transition:.3s;border:1px solid #f1e3c8;display:flex;flex-direction:column;}
+  .pcard:hover{transform:translateY(-6px);box-shadow:0 16px 34px rgba(214,51,108,.18);}
+  .pcard-img{height:170px;overflow:hidden;position:relative;background:#f3e6cf;}
+  .pcard-img img{width:100%;height:100%;object-fit:cover;transition:.4s;}
+  .pcard:hover .pcard-img img{transform:scale(1.08);}
+  .pcard-tag{position:absolute;top:10px;right:10px;background:var(--gold);color:var(--choc);font-size:11px;font-weight:800;padding:4px 10px;border-radius:14px;}
+  .pcard-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1;}
+  .pcard-body h3{font-size:17px;color:var(--choc);}
+  .pcard-body .desc{font-size:12.5px;color:#9c8a7a;min-height:32px;}
+  .pcard-price{font-weight:900;color:var(--pink-dark);font-size:15px;}
+  .gram-select{display:flex;gap:6px;margin-top:4px;}
+  .gram-opt{flex:1;text-align:center;padding:7px 4px;border-radius:9px;border:1.5px solid #e9d8b9;font-size:12px;font-weight:800;color:var(--choc);background:#fffdf7;transition:.15s;}
+  .gram-opt.sel{background:var(--pink);color:#fff;border-color:var(--pink);}
+  .qty-stepper{display:flex;align-items:center;gap:10px;margin-top:4px;justify-content:center;background:#fffdf7;border:1.5px solid #e9d8b9;border-radius:10px;padding:6px;}
+  .qty-btn{width:30px;height:30px;border-radius:8px;background:var(--gold-light);color:var(--choc);font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center;}
+  .qty-btn:hover{background:var(--gold);}
+  .qty-val{font-weight:800;font-size:15px;min-width:24px;text-align:center;}
+  .add-btn{margin-top:8px;background:var(--choc);color:var(--gold-light);padding:10px;border-radius:10px;font-weight:800;font-size:14px;transition:.2s;}
+  .add-btn:hover{background:var(--pink-dark);color:#fff;}
+  .add-btn.added{background:#3a9d4a;color:#fff;}
+
+  .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;}
+  .feature{background:#fff;border-radius:16px;padding:26px 20px;text-align:center;border:1px solid #f1e3c8;transition:.3s;}
+  .feature:hover{border-color:var(--pink);transform:translateY(-4px);}
+  .feature .ic{font-size:34px;margin-bottom:12px;}
+  .feature h4{color:var(--choc);font-size:16px;margin-bottom:6px;}
+  .feature p{color:#9c8a7a;font-size:13.5px;}
+
+  .branches-wrap{background:var(--choc);border-radius:24px;padding:50px 30px;color:#fff;}
+  .branches-wrap .sec-head h2,.branches-wrap .sec-eyebrow{color:#fff;}
+  .branches-wrap .sec-eyebrow{color:var(--gold-light);}
+  .branches-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+  .branch{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:22px;transition:.25s;}
+  .branch:hover{background:rgba(255,255,255,.12);border-color:var(--gold);}
+  .branch h4{color:var(--gold-light);font-size:17px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .branch p{color:#e9ddcf;font-size:14px;line-height:1.7;}
+  .map-frame{margin-top:30px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.15);height:300px;}
+  .map-frame iframe{width:100%;height:100%;border:0;}
+
+  .contact-card{background:linear-gradient(135deg,var(--pink),var(--pink-dark));border-radius:22px;padding:44px;color:#fff;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;}
+  .contact-card h3{font-size:24px;margin-bottom:8px;}
+  .contact-card p{color:#ffdde9;font-size:14.5px;}
+  .wa-btns{display:flex;gap:12px;flex-wrap:wrap;}
+  .wa-btn{background:var(--green-wa);color:#fff;padding:13px 22px;border-radius:30px;font-weight:800;display:flex;align-items:center;gap:8px;font-size:14.5px;transition:.2s;}
+  .wa-btn:hover{background:#1ebd59;transform:translateY(-2px);}
+
+  footer{background:var(--ink);color:#cdb89c;padding:40px 24px 20px;text-align:center;}
+  footer .f-logo{font-family:'Cairo',sans-serif;font-weight:900;color:var(--gold-light);font-size:20px;margin-bottom:10px;}
+  footer p{font-size:13.5px;color:#a7917a;max-width:500px;margin:0 auto 14px;}
+  footer .f-links{display:flex;justify-content:center;gap:18px;margin-bottom:18px;flex-wrap:wrap;}
+  footer .f-links a{font-size:13px;color:#cdb89c;font-weight:700;cursor:pointer;}
+  footer .f-links a:hover{color:var(--gold-light);}
+  footer .admin-link{opacity:.55;}
+  footer .admin-link:hover{opacity:1;color:var(--gold-light);}
+  footer .copyright{font-size:12px;color:#75614c;margin-top:14px;}
+
+  .overlay{position:fixed;inset:0;background:rgba(20,10,5,.55);z-index:500;opacity:0;pointer-events:none;transition:.3s;}
+  .overlay.show{opacity:1;pointer-events:auto;}
+  .drawer{position:fixed;top:0;left:-420px;width:100%;max-width:420px;height:100%;background:var(--cream);z-index:600;transition:.35s ease;display:flex;flex-direction:column;box-shadow:8px 0 30px rgba(0,0,0,.3);}
+  .drawer.show{left:0;}
+  .drawer-head{display:flex;justify-content:space-between;align-items:center;padding:20px 22px;background:var(--pink);color:#fff;}
+  .drawer-head h3{font-size:19px;}
+  .close-x{font-size:22px;background:transparent;color:#fff;width:34px;height:34px;border-radius:50%;}
+  .close-x:hover{background:rgba(255,255,255,.2);}
+  .drawer-body{flex:1;overflow-y:auto;padding:18px 20px;}
+  .cart-item{display:flex;gap:12px;align-items:center;background:#fff;border-radius:12px;padding:10px;margin-bottom:10px;border:1px solid #f1e3c8;}
+  .cart-item img{width:54px;height:54px;border-radius:9px;object-fit:cover;flex-shrink:0;}
+  .ci-info{flex:1;}
+  .ci-info h5{font-size:14px;color:var(--choc);}
+  .ci-info span{font-size:12px;color:#9c8a7a;}
+  .ci-price{font-weight:800;color:var(--pink-dark);font-size:13.5px;}
+  .ci-remove{color:var(--red);font-size:12px;font-weight:700;margin-top:4px;cursor:pointer;}
+  .empty-cart{text-align:center;color:#bba88f;padding:60px 10px;font-size:15px;}
+  .drawer-foot{padding:18px 22px;border-top:2px solid #f1e3c8;background:#fff;}
+  .total-row{display:flex;justify-content:space-between;font-weight:900;font-size:18px;color:var(--choc);margin-bottom:14px;}
+  .checkout-btn{width:100%;background:var(--choc);color:var(--gold-light);padding:15px;border-radius:12px;font-weight:800;font-size:15.5px;}
+  .checkout-btn:hover{background:var(--pink-dark);color:#fff;}
+
+  .modal-overlay{position:fixed;inset:0;background:rgba(20,10,5,.6);z-index:700;display:none;align-items:center;justify-content:center;padding:18px;}
+  .modal-overlay.show{display:flex;}
+  .modal-box{background:#fff;border-radius:20px;max-width:460px;width:100%;max-height:90vh;overflow-y:auto;padding:28px;position:relative;}
+  .modal-close{position:absolute;top:16px;left:16px;width:34px;height:34px;border-radius:50%;background:#f3e6cf;font-size:18px;z-index:5;cursor:pointer;}
+  .modal-close:hover{background:var(--pink);color:#fff;}
+  .modal-box h3{font-size:21px;color:var(--choc);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:13.5px;font-weight:800;color:var(--choc);margin-bottom:6px;}
+  .field input,.field textarea{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid #e9d8b9;font-family:inherit;font-size:14.5px;background:#fffdf7;}
+  .field input:focus,.field textarea:focus{outline:2px solid var(--pink);border-color:var(--pink);}
+  .field-error{color:var(--red);font-size:12px;margin-top:5px;display:none;font-weight:700;}
+  .field-error.show{display:block;}
+  .toggle-row{display:flex;gap:10px;margin-bottom:14px;}
+  .toggle-opt{flex:1;text-align:center;padding:13px;border-radius:11px;border:2px solid #e9d8b9;font-weight:800;font-size:14px;color:var(--choc);background:#fffdf7;transition:.15s;cursor:pointer;}
+  .toggle-opt.sel{background:var(--pink);color:#fff;border-color:var(--pink);}
+  .submit-btn{width:100%;background:var(--gold);color:var(--choc);padding:14px;border-radius:11px;font-weight:900;font-size:15.5px;cursor:pointer;}
+  .submit-btn:hover{background:var(--gold-light);}
+  .submit-btn:disabled{opacity:.6;cursor:not-allowed;}
+  .order-summary-box{background:#fff8ee;border:1.5px dashed var(--gold);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13.5px;color:#6b5640;}
+  .blocked-box{background:#fdeaea;border:1.5px solid var(--red);border-radius:12px;padding:14px;margin-bottom:14px;color:var(--red);font-weight:800;font-size:14px;display:none;text-align:center;}
+  .blocked-box.show{display:block;}
+
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--choc);color:var(--gold-light);padding:13px 26px;border-radius:30px;font-weight:800;font-size:14px;z-index:900;transition:.3s;box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:90vw;text-align:center;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  .toast.error{background:var(--red);color:#fff;}
+
+  .diag-banner{display:none;background:var(--red);color:#fff;text-align:center;font-weight:800;font-size:13.5px;padding:10px 16px;}
+  .diag-banner.show{display:block;}
+
+  @media(max-width:600px){
+    section{padding:50px 16px;}
+    .contact-card{flex-direction:column;text-align:center;}
+    .modal-box{padding:22px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="site-loader" id="siteLoader"><div class="ld-spin"></div><span>بنجهزلك المحمصة...</span></div>
+
+<!-- بانر تشخيص: بيظهر تلقائيًا لو في مشكلة اتصال بقاعدة البيانات (RLS / صلاحيات) -->
+<div class="diag-banner" id="diagBanner"></div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="logo-wrap">
+    <img class="logo-badge-img" id="siteLogoImg" src="" alt="محمصة الجابري">
+    <div class="logo-text">الجابري<span>.</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="#products">المنتجات</a>
+    <a href="#about">ليه إحنا</a>
+    <a href="#branches">الفرع</a>
+    <a href="#contact">تواصل معانا</a>
+  </div>
+  <div class="nav-actions">
+    <button class="icon-btn" id="cartBtn">
+      🛒<span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <img class="float-nut n1" src="https://commons.wikimedia.org/wiki/Special:FilePath/Pistachio.jpg" alt="فستق">
+  <img class="float-nut n2" src="https://commons.wikimedia.org/wiki/Special:FilePath/Sunflower_seeds.JPG" alt="لب">
+  <img class="float-nut n3" src="https://commons.wikimedia.org/wiki/Special:FilePath/Almonds.jpg" alt="لوز">
+  <img class="float-nut n4" src="https://commons.wikimedia.org/wiki/Special:FilePath/Snickers.jpg" alt="شوكولاتة">
+  <div class="hero-content">
+    <span class="hero-eyebrow">طنطا – الجلاء 🌰</span>
+    <div class="drum-wrap"><div class="drum"><div class="drum-inner">🔥</div></div></div>
+    <h1>شريكك في <em>طعام الزمن الجميل</em></h1>
+    <p>تسالي بطعم زمان – مكسرات ولب وشوكولاتة بأجود خامة، بتتحمص وتتوزن قدامك بالجرام</p>
+    <div class="hero-ctas">
+      <a href="#products" class="btn btn-primary">شوف المنتجات 🛍️</a>
+      <a href="https://wa.me/201029146773" target="_blank" class="btn btn-outline">كلمنا واتساب 💬</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== MARQUEE ===== -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span>🌰 تسالي بطعم الزمن الجميل</span>
+    <span>🔥 بتتحمص قدامك أول بأول</span>
+    <span>⚖️ بيع بالجرام زي ما تحب</span>
+    <span>🚚 توصيل لحد باب بيتك</span>
+    <span>🍫 شوكولاتة وسناكس مستوردة</span>
+    <span>🌰 تسالي بطعم الزمن الجميل</span>
+    <span>🔥 بتتحمص قدامك أول بأول</span>
+    <span>⚖️ بيع بالجرام زي ما تحب</span>
+    <span>🚚 توصيل لحد باب بيتك</span>
+    <span>🍫 شوكولاتة وسناكس مستوردة</span>
+  </div>
+</div>
+
+<!-- ===== PRODUCTS ===== -->
+<section id="products">
+  <div class="sec-head reveal">
+    <span class="sec-eyebrow">المنتجات</span>
+    <h2>اختار اللي نفسك فيه</h2>
+    <p>مكسرات محمصة، لب، وشوكولاتة فاخرة</p>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="tab-btn active" data-cat="all">الكل</button>
+    <button class="tab-btn" data-cat="mekassarat">مكسرات</button>
+    <button class="tab-btn" data-cat="lab">لب</button>
+    <button class="tab-btn" data-cat="choco">شوكولاتة وسناكس</button>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <div class="sec-head reveal">
+    <span class="sec-eyebrow">ليه تختارنا</span>
+    <h2>إحنا مش بس بنبيع... إحنا بنحمص بحب</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature reveal"><div class="ic">🌟</div><h4>أجود الخامات</h4><p>جودة عالية، طعم لا يُقاوم</p></div>
+    <div class="feature reveal"><div class="ic">🎁</div><h4>تشكيلة متنوعة</h4><p>لكل أفراد الأسرة، لكل الأوقات</p></div>
+    <div class="feature reveal"><div class="ic">🚚</div><h4>توصيل لأي مكان</h4><p>هنوصلك لحد باب بيتك</p></div>
+    <div class="feature reveal"><div class="ic">🤝</div><h4>خدمة عملاء مميزة</h4><p>دعم سريع، لخدمتكم دائماً</p></div>
+  </div>
+</section>
+
+<!-- ===== BRANCH ===== -->
+<section id="branches">
+  <div class="branches-wrap reveal">
+    <div class="sec-head">
+      <span class="sec-eyebrow">فرعنا</span>
+      <h2>زورنا في الفرع</h2>
+    </div>
+    <div class="branches-grid">
+      <div class="branch"><h4>📍 فرع الجلاء</h4><p>طنطا – الجلاء – الموقف القديم</p></div>
+    </div>
+    <div class="map-frame"><iframe loading="lazy" src="https://www.google.com/maps?q=الجلاء,طنطا,مصر&output=embed"></iframe></div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+  <div class="contact-card reveal">
+    <div><h3>عايز تطلب أو تستفسر؟</h3><p>كلمنا على واتساب وإحنا تحت أمرك</p></div>
+    <div class="wa-btns">
+      <a class="wa-btn" href="https://wa.me/201029146773" target="_blank">💬 01029146773</a>
+      <a class="wa-btn" href="https://wa.me/201094410003" target="_blank">💬 01094410003</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="f-logo">محمصة الجابري 🌰</div>
+  <p>تسالي بطعم الزمن الجميل – مكسرات، لب، وشوكولاتة بأجود خامة</p>
+  <div class="f-links">
+    <a href="#products">المنتجات</a>
+    <a href="#branches">الفرع</a>
+    <a href="#contact">تواصل معانا</a>
+    <a class="admin-link" href="dashboard.html" target="_blank" title="لوحة تحكم الإدارة">⚙️ الإدارة</a>
+  </div>
+  <div class="copyright">© 2026 محمصة الجابري. كل الحقوق محفوظة</div>
+</footer>
+
+<!-- ===== CART DRAWER ===== -->
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="cartDrawer">
+  <div class="drawer-head"><h3>🛒 سلتك</h3><button class="close-x" id="closeCart">×</button></div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot">
+    <div class="total-row"><span>الإجمالي</span><span id="cartTotal">0 جنيه</span></div>
+    <button class="checkout-btn" id="checkoutBtn">إتمام الطلب</button>
+  </div>
+</div>
+
+<!-- ===== CHECKOUT MODAL ===== -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal-box">
+    <button class="modal-close" data-close="checkoutModal">×</button>
+    <h3>🧾 بيانات الطلب</h3>
+    <div class="blocked-box" id="blockedBox">عذراً، الرقم ده موقوف عندنا حاليًا. لو فيه أي استفسار كلمنا على واتساب 🙏</div>
+    <div class="order-summary-box" id="checkoutSummary"></div>
+    <div class="field">
+      <label>الاسم</label>
+      <input type="text" id="custName" placeholder="اكتب اسمك">
+      <div class="field-error" id="nameError">من فضلك اكتب اسمك</div>
+    </div>
+    <div class="field">
+      <label>رقم الهاتف</label>
+      <input type="tel" id="custPhone" placeholder="01XXXXXXXXX" maxlength="11">
+      <div class="field-error" id="phoneError">الرقم لازم يبدأ بـ 01 ويكون 11 رقم</div>
+    </div>
+    <div class="field">
+      <label>طريقة الاستلام</label>
+      <div class="toggle-row">
+        <div class="toggle-opt sel" id="optPickup">استلام من الفرع</div>
+        <div class="toggle-opt" id="optDelivery">توصيل</div>
+      </div>
+    </div>
+    <div class="field" id="addressField" style="display:none;">
+      <label>العنوان بالتفصيل</label>
+      <textarea id="custAddress" rows="3" placeholder="اكتب عنوانك بالتفصيل عشان نوصلك بسهولة"></textarea>
+      <div class="field-error" id="addressError">من فضلك اكتب العنوان</div>
+    </div>
+    <button class="submit-btn" id="confirmOrderBtn">تأكيد الطلب ✅</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   SITE LOGO
+   ============================================================ */
+const siteLogoEl = document.getElementById('siteLogoImg');
+siteLogoEl.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><rect width='100%25' height='100%25' rx='50' fill='%23d6336c'/><text x='50%25' y='58%25' font-size='46' text-anchor='middle'>🌰</text></svg>";
+
+/* ============================================================
+   SUPABASE CONFIG
+   ============================================================ */
+const SUPABASE_URL = 'https://nqfnonkhpjkpwwavaqxh.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_7eFnPZo2EOti7XFOmy_xMg__oa0ZJWD';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ============================================================
+   ⚠️ إعدادات قاعدة البيانات المطلوبة (Supabase SQL Editor)
+   لازم تتشغل مرة واحدة في Supabase > SQL Editor عشان
+   الطلبات تتسجل والمنتجات تظهر صح (RLS Policies):
+
+   alter table public.orders enable row level security;
+   create policy "anon insert orders" on public.orders for insert to anon with check (true);
+   create policy "anon select orders" on public.orders for select to anon using (true);
+
+   alter table public.blacklist enable row level security;
+   create policy "anon read blacklist" on public.blacklist for select to anon using (true);
+
+   alter table public.products enable row level security;
+   create policy "anon read products" on public.products for select to anon using (true);
+   ============================================================ */
+
+/* ============================================================
+   IMAGES
+   ============================================================ */
+const IMG = {
+  nutsMix: 'https://commons.wikimedia.org/wiki/Special:FilePath/Mixed_nuts.jpg',
+  pistachio: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pistachio.jpg',
+  almond: 'https://commons.wikimedia.org/wiki/Special:FilePath/Almonds.jpg',
+  cashew: 'https://commons.wikimedia.org/wiki/Special:FilePath/Cashew_nuts.JPG',
+  hazelnut: 'https://commons.wikimedia.org/wiki/Special:FilePath/Hazelnuts.jpg',
+  walnut: 'https://commons.wikimedia.org/wiki/Special:FilePath/Walnuts.JPG',
+  peanut: 'https://commons.wikimedia.org/wiki/Special:FilePath/Peanuts.jpg',
+  sunflower: 'https://commons.wikimedia.org/wiki/Special:FilePath/Sunflower_seeds.JPG',
+  pumpkin: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pepita_de_calabaza.jpg',
+  bounty: 'https://commons.wikimedia.org/wiki/Special:FilePath/Bounty-Split.jpg',
+  snickers: 'https://commons.wikimedia.org/wiki/Special:FilePath/Snickers.jpg',
+  kinderBueno: 'https://commons.wikimedia.org/wiki/Special:FilePath/Kinder-Bueno-Split.jpg',
+  galaxy: 'https://commons.wikimedia.org/wiki/Special:FilePath/Galaxy_Bubbles_Long_Split.jpg',
+  kitkat: 'https://commons.wikimedia.org/wiki/Special:FilePath/KitKat.jpg',
+  mars: 'https://commons.wikimedia.org/wiki/Special:FilePath/US-Mars-Bar-Split.jpg',
+  twix: 'https://commons.wikimedia.org/wiki/Special:FilePath/Twix.jpg',
+  lays: 'https://commons.wikimedia.org/wiki/Special:FilePath/Lays.jpg',
+  doritos: 'https://commons.wikimedia.org/wiki/Special:FilePath/Doritos.jpg',
+  whiteChocolate: 'https://commons.wikimedia.org/wiki/Special:FilePath/Chocolate%28bgFFF%29.jpg',
+  ferrero: 'https://commons.wikimedia.org/wiki/Special:FilePath/Ferrero_Rocher_1pcs_foil_open_20150118.jpg',
+  oreo: 'https://commons.wikimedia.org/wiki/Special:FilePath/Oreo.jpg',
+  mms: 'https://commons.wikimedia.org/wiki/Special:FilePath/M%26M%27s.jpg',
+  toblerone: 'https://commons.wikimedia.org/wiki/Special:FilePath/Toblerone.jpg',
+  pringles: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pringles_chips.JPG'
+};
+
+const FALLBACK_IMG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'><rect width='100%' height='100%' fill='%23f3e6cf'/><text x='50%' y='50%' font-size='60' text-anchor='middle' dominant-baseline='middle'>🌰</text></svg>";
+
+/* ============================================================
+   PRODUCTS (fallback لو Supabase فاضي)
+   ============================================================ */
+const DEFAULT_PRODUCTS = [
+  {id:'p1',name:'مكسرات مشكلة محمصة',cat:'mekassarat',img:IMG.nutsMix,tag:'الأكثر طلباً',type:'gram',price:28,desc:'تشكيلة فاخرة من أحلى المكسرات'},
+  {id:'p2',name:'فستق سوري محمص',cat:'mekassarat',img:IMG.pistachio,tag:'بريميوم',type:'gram',price:45,desc:'فستق سوري أصلي محمص ع النار'},
+  {id:'p3',name:'لوز محمص مملح',cat:'mekassarat',img:IMG.almond,tag:'',type:'gram',price:35,desc:'لوز هندي فرز أول'},
+  {id:'p4',name:'كاجو محمص',cat:'mekassarat',img:IMG.cashew,tag:'',type:'gram',price:42,desc:'كاجو هندي حجم كبير'},
+  {id:'p5',name:'بندق محمص',cat:'mekassarat',img:IMG.hazelnut,tag:'',type:'gram',price:38,desc:'بندق تركي فرز أول'},
+  {id:'p6',name:'جوز محمص',cat:'mekassarat',img:IMG.walnut,tag:'',type:'gram',price:40,desc:'جوز أمريكي حجم كبير'},
+  {id:'p8',name:'فول سوداني محمص',cat:'mekassarat',img:IMG.peanut,tag:'اقتصادي',type:'gram',price:12,desc:'فول سوداني مملح ع الطريقة'},
+  {id:'p9',name:'لب سوري',cat:'lab',img:IMG.sunflower,tag:'الأكثر طلباً',type:'gram',price:18,desc:'لب سوري محمص بالملح البلدي'},
+  {id:'p10',name:'لب أبيض',cat:'lab',img:IMG.pumpkin,tag:'',type:'gram',price:16,desc:'لب أبيض نقي محمص'},
+  {id:'p10b',name:'لب كابلي محمص',cat:'lab',img:IMG.pumpkin,tag:'',type:'gram',price:20,desc:'لب كابلي حجم كبير محمص ع النار'},
+  {id:'p11',name:'باونتي',cat:'choco',img:IMG.bounty,tag:'مستورد',type:'piece',price:25,desc:'شوكولاتة باونتي بجوز الهند'},
+  {id:'p12',name:'سنيكرز',cat:'choco',img:IMG.snickers,tag:'مستورد',type:'piece',price:22,desc:'سنيكرز بالفول السوداني'},
+  {id:'p13',name:'كيندر بوينو',cat:'choco',img:IMG.kinderBueno,tag:'مستورد',type:'piece',price:20,desc:'كيندر بوينو بالبندق'},
+  {id:'p14',name:'جالكسي',cat:'choco',img:IMG.galaxy,tag:'مستورد',type:'piece',price:28,desc:'شوكولاتة جالكسي بالكريمة'},
+  {id:'p15',name:'كيت كات',cat:'choco',img:IMG.kitkat,tag:'مستورد',type:'piece',price:15,desc:'كيت كات بالويفر'},
+  {id:'p16',name:'مارس',cat:'choco',img:IMG.mars,tag:'مستورد',type:'piece',price:20,desc:'مارس بالكراميل'},
+  {id:'p17',name:'تواكس',cat:'choco',img:IMG.twix,tag:'مستورد',type:'piece',price:20,desc:'تواكس بالكراميل والويفر'},
+  {id:'p18',name:'ليز شيبسي',cat:'choco',img:IMG.lays,tag:'',type:'piece',price:18,desc:'شيبسي ليز كيس كبير'},
+  {id:'p19',name:'دوريتوس',cat:'choco',img:IMG.doritos,tag:'',type:'piece',price:20,desc:'دوريتوس جبنة'},
+  {id:'p20',name:'شوكولاتة بيضاء',cat:'choco',img:IMG.whiteChocolate,tag:'مستورد',type:'piece',price:30,desc:'شوكولاتة بيضاء فاخرة'},
+  {id:'p21',name:'فيريرو روشيه (حبة)',cat:'choco',img:IMG.ferrero,tag:'فاخر',type:'piece',price:12,desc:'شوكولاتة فيريرو روشيه بالبندق'},
+  {id:'p22',name:'أوريو',cat:'choco',img:IMG.oreo,tag:'',type:'piece',price:14,desc:'بسكويت أوريو بالكريمة'},
+  {id:'p23',name:'إم آند إمز',cat:'choco',img:IMG.mms,tag:'مستورد',type:'piece',price:18,desc:'شوكولاتة إم آند إمز الملونة'},
+  {id:'p24',name:'توبليرون',cat:'choco',img:IMG.toblerone,tag:'فاخر',type:'piece',price:35,desc:'شوكولاتة توبليرون السويسرية بالعسل واللوز'},
+  {id:'p25',name:'برينجلز',cat:'choco',img:IMG.pringles,tag:'مستورد',type:'piece',price:32,desc:'بطاطس برينجلز أصلي'}
+];
+
+const GRAMS = [250, 500, 1000];
+const LAB_GRAMS = [50, 100, 250, 500];
+
+let PRODUCTS = [];
+let cart = [];
+let currentCat = 'all';
+let selectedGrams = {};
+let selectedQty = {};
+
+function gramsForCat(cat) { return cat === 'lab' ? LAB_GRAMS : GRAMS; }
+function defaultGramForCat(cat) { return cat === 'lab' ? LAB_GRAMS[0] : GRAMS[1]; }
+
+/* ============================================================
+   DIAGNOSTIC BANNER
+   ============================================================ */
+function showDiagBanner(msg) {
+  const b = document.getElementById('diagBanner');
+  b.textContent = '⚠️ ' + msg;
+  b.classList.add('show');
+}
+function hideDiagBanner() { document.getElementById('diagBanner').classList.remove('show'); }
+
+/* ============================================================
+   SUPABASE FUNCTIONS
+   ============================================================ */
+async function loadProductsFromSupabase() {
+  try {
+    const { data, error } = await supabaseClient.from('products').select('*').order('created_at', { ascending: true });
+    if (error) { console.error('❌ خطأ في تحميل المنتجات:', error); PRODUCTS = DEFAULT_PRODUCTS; return; }
+    if (data && data.length > 0) { PRODUCTS = data; return; }
+  } catch (e) { console.error('❌ خطأ غير متوقع في تحميل المنتجات:', e); }
+  PRODUCTS = DEFAULT_PRODUCTS;
+}
+
+async function saveOrderToSupabase(order) {
+  try {
+    const { data, error } = await supabaseClient.from('orders').insert([{
+      id: order.id,
+      customer_name: order.name,
+      phone: order.phone,
+      fulfillment: order.fulfillment,
+      branch: 'طنطا – الجلاء – الموقف القديم',
+      address: order.address || '',
+      total: order.total,
+      items: order.items
+    }]).select();
+
+    if (error) {
+      console.error('❌ فشل حفظ الطلب:', error);
+      const isPermission = /row-level security|permission|policy/i.test(error.message || '');
+      if (isPermission) showDiagBanner('في مشكلة صلاحيات في قاعدة البيانات (RLS) - الطلبات مش بتتسجل.');
+      return { success: false, message: error.message || 'فشل الاتصال بقاعدة البيانات' };
+    }
+    if (!data || data.length === 0) {
+      console.error('❌ الطلب اترفض بصمت - غالبًا RLS');
+      showDiagBanner('الطلبات مش بتتسجل فعليًا - في مشكلة صلاحيات (RLS).');
+      return { success: false, message: 'الطلب اترفض من قاعدة البيانات (تحقق من صلاحيات RLS)' };
+    }
+    hideDiagBanner();
+    return { success: true };
+  } catch (e) {
+    console.error('❌ خطأ غير متوقع أثناء حفظ الطلب:', e);
+    return { success: false, message: e.message || 'حصل خطأ غير متوقع، جرب تاني' };
+  }
+}
+
+async function loadBlacklistFromSupabase() {
+  try {
+    const { data, error } = await supabaseClient.from('blacklist').select('phone');
+    if (error) { console.error('❌ خطأ في تحميل القائمة السوداء:', error); return []; }
+    return data ? data.map(b => b.phone) : [];
+  } catch (e) { console.error('❌ خطأ غير متوقع في تحميل القائمة السوداء:', e); return []; }
+}
+
+/* ============================================================
+   RENDER PRODUCTS
+   ============================================================ */
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = '';
+  const list = currentCat === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.cat === currentCat);
+
+  if (list.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#bba88f;padding:40px;">مفيش منتجات في القسم ده حالياً</div>';
+    return;
+  }
+
+  list.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'pcard reveal show';
+    let priceBlock, controlsBlock;
+
+    if (p.type === 'piece') {
+      if (!selectedQty[p.id]) selectedQty[p.id] = 1;
+      const qty = selectedQty[p.id];
+      const total = Math.round(p.price * qty);
+      priceBlock = `<div class="pcard-price" id="price-${p.id}">${total} جنيه</div>`;
+      controlsBlock = `
+        <div class="qty-stepper" data-pid="${p.id}">
+          <button class="qty-btn" data-act="dec">−</button>
+          <span class="qty-val" id="qtyval-${p.id}">${qty}</span>
+          <button class="qty-btn" data-act="inc">+</button>
+        </div>`;
+    } else {
+      const catGrams = gramsForCat(p.cat);
+      if (!selectedGrams[p.id]) selectedGrams[p.id] = defaultGramForCat(p.cat);
+      const g = selectedGrams[p.id];
+      const price = Math.round(p.price * g / 100);
+      priceBlock = `<div class="pcard-price" id="price-${p.id}">${price} جنيه</div>`;
+      controlsBlock = `
+        <div class="gram-select" data-pid="${p.id}">
+          ${catGrams.map(gm => `<div class="gram-opt ${gm === g ? 'sel' : ''}" data-g="${gm}">${gm >= 1000 ? '1 كيلو' : gm + ' جم'}</div>`).join('')}
+        </div>`;
+    }
+
+    card.innerHTML = `
+      <div class="pcard-img">
+        ${p.tag ? `<span class="pcard-tag">${p.tag}</span>` : ''}
+        <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}'">
+      </div>
+      <div class="pcard-body">
+        <h3>${p.name}</h3>
+        <div class="desc">${p.desc || ''}</div>
+        ${controlsBlock}
+        ${priceBlock}
+        <button class="add-btn" data-pid="${p.id}">أضف للسلة 🛒</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  grid.querySelectorAll('.gram-select').forEach(gs => {
+    gs.querySelectorAll('.gram-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const pid = gs.dataset.pid;
+        selectedGrams[pid] = parseInt(opt.dataset.g);
+        gs.querySelectorAll('.gram-opt').forEach(o => o.classList.remove('sel'));
+        opt.classList.add('sel');
+        const prod = PRODUCTS.find(x => x.id === pid);
+        document.getElementById('price-' + pid).textContent = Math.round(prod.price * selectedGrams[pid] / 100) + ' جنيه';
+      });
+    });
+  });
+
+  grid.querySelectorAll('.qty-stepper').forEach(qs => {
+    qs.querySelectorAll('.qty-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pid = qs.dataset.pid;
+        let q = selectedQty[pid] || 1;
+        q = btn.dataset.act === 'inc' ? q + 1 : Math.max(1, q - 1);
+        selectedQty[pid] = q;
+        document.getElementById('qtyval-' + pid).textContent = q;
+        const prod = PRODUCTS.find(x => x.id === pid);
+        document.getElementById('price-' + pid).textContent = Math.round(prod.price * q) + ' جنيه';
+      });
+    });
+  });
+
+  grid.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pid = btn.dataset.pid;
+      const prod = PRODUCTS.find(x => x.id === pid);
+      let item;
+      if (prod.type === 'piece') {
+        const qty = selectedQty[pid] || 1;
+        item = { id: prod.id, name: prod.name, mode: 'piece', unitLabel: 'حبة', unitQty: qty, price: Math.round(prod.price * qty), img: prod.img };
+      } else {
+        const g = selectedGrams[pid];
+        const price = Math.round(prod.price * g / 100);
+        item = { id: prod.id, name: prod.name, mode: 'gram', unitLabel: (g >= 1000 ? '1 كيلو' : g + ' جم'), unitQty: g, price, img: prod.img };
+      }
+      addToCart(item);
+      btn.textContent = 'اتضاف ✅';
+      btn.classList.add('added');
+      setTimeout(() => { btn.textContent = 'أضف للسلة 🛒'; btn.classList.remove('added'); }, 1100);
+    });
+  });
+}
+
+document.getElementById('tabs').addEventListener('click', e => {
+  if (!e.target.classList.contains('tab-btn')) return;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  currentCat = e.target.dataset.cat;
+  renderProducts();
+});
+
+/* ===================== CART ===================== */
+function addToCart(item) {
+  const existing = cart.find(c => c.id === item.id && c.unitQty === item.unitQty && c.mode === item.mode);
+  if (existing) existing.qty = (existing.qty || 1) + 1;
+  else { item.qty = 1; cart.push(item); }
+  renderCart();
+  showToast('اتضاف للسلة 🛒');
+}
+
+function removeFromCart(idx) { cart.splice(idx, 1); renderCart(); }
+
+function renderCart() {
+  const body = document.getElementById('cartBody');
+  const count = cart.reduce((s, c) => s + (c.qty || 1), 0);
+  document.getElementById('cartCount').textContent = count;
+  if (cart.length === 0) {
+    body.innerHTML = '<div class="empty-cart">السلة فاضية 🛒<br>روح ضيف شوية تسالي!</div>';
+  } else {
+    body.innerHTML = cart.map((c, i) => `
+      <div class="cart-item">
+        <img src="${c.img}" onerror="this.onerror=null;this.src='${FALLBACK_IMG}'">
+        <div class="ci-info">
+          <h5>${c.name}</h5>
+          <span>${c.unitLabel} × ${c.qty || 1}</span>
+          <div class="ci-price">${c.price * (c.qty || 1)} جنيه</div>
+        </div>
+        <span class="ci-remove" data-idx="${i}">حذف</span>
+      </div>
+    `).join('');
+    body.querySelectorAll('.ci-remove').forEach(el => {
+      el.addEventListener('click', () => removeFromCart(parseInt(el.dataset.idx)));
+    });
+  }
+  const total = cart.reduce((s, c) => s + c.price * (c.qty || 1), 0);
+  document.getElementById('cartTotal').textContent = total + ' جنيه';
+}
+
+document.getElementById('cartBtn').addEventListener('click', () => openDrawer());
+document.getElementById('closeCart').addEventListener('click', closeDrawer);
+document.getElementById('overlay').addEventListener('click', closeDrawer);
+
+function openDrawer() { document.getElementById('cartDrawer').classList.add('show'); document.getElementById('overlay').classList.add('show'); }
+function closeDrawer() { document.getElementById('cartDrawer').classList.remove('show'); document.getElementById('overlay').classList.remove('show'); }
+
+/* ===================== CHECKOUT ===================== */
+document.getElementById('checkoutBtn').addEventListener('click', () => {
+  if (cart.length === 0) { showToast('السلة فاضية!'); return; }
+  closeDrawer();
+  document.getElementById('blockedBox').classList.remove('show');
+  const total = cart.reduce((s, c) => s + c.price * (c.qty || 1), 0);
+  document.getElementById('checkoutSummary').innerHTML = `عدد الأصناف: ${cart.length} — الإجمالي: <b>${total} جنيه</b>`;
+  openModal('checkoutModal');
+});
+
+let fulfillment = 'pickup';
+document.getElementById('optPickup').addEventListener('click', () => {
+  fulfillment = 'pickup';
+  document.getElementById('optPickup').classList.add('sel');
+  document.getElementById('optDelivery').classList.remove('sel');
+  document.getElementById('addressField').style.display = 'none';
+});
+document.getElementById('optDelivery').addEventListener('click', () => {
+  fulfillment = 'delivery';
+  document.getElementById('optDelivery').classList.add('sel');
+  document.getElementById('optPickup').classList.remove('sel');
+  document.getElementById('addressField').style.display = 'block';
+});
+
+function validatePhone(phone) { return /^01[0-9]{9}$/.test(phone); }
+
+document.getElementById('confirmOrderBtn').addEventListener('click', async () => {
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  let ok = true;
+
+  document.getElementById('blockedBox').classList.remove('show');
+  document.getElementById('nameError').classList.toggle('show', !name);
+  if (!name) ok = false;
+  if (!validatePhone(phone)) { document.getElementById('phoneError').classList.add('show'); ok = false; }
+  else { document.getElementById('phoneError').classList.remove('show'); }
+
+  let address = '';
+  if (fulfillment === 'delivery') {
+    address = document.getElementById('custAddress').value.trim();
+    if (!address) { document.getElementById('addressError').classList.add('show'); ok = false; }
+    else document.getElementById('addressError').classList.remove('show');
+  }
+  if (!ok) return;
+
+  const btn = document.getElementById('confirmOrderBtn');
+  btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = 'جاري إرسال الطلب...';
+
+  const blacklist = await loadBlacklistFromSupabase();
+  if (blacklist.includes(phone)) {
+    document.getElementById('blockedBox').classList.add('show');
+    btn.disabled = false;
+    btn.textContent = originalText;
+    return;
+  }
+
+  const order = {
+    id: 'ord_' + Date.now(),
+    name, phone, fulfillment, address,
+    items: cart.map(c => ({ name: c.name, unitLabel: c.unitLabel, qty: c.qty || 1, price: c.price })),
+    total: cart.reduce((s, c) => s + c.price * (c.qty || 1), 0),
+    created_at: new Date().toISOString()
+  };
+
+  const result = await saveOrderToSupabase(order);
+  btn.disabled = false;
+  btn.textContent = originalText;
+
+  if (result.success) {
+    cart = [];
+    renderCart();
+    closeModal('checkoutModal');
+    document.getElementById('custName').value = '';
+    document.getElementById('custPhone').value = '';
+    document.getElementById('custAddress').value = '';
+    showToast('✅ طلبك اتسجل بنجاح! هنكلمك حالاً');
+  } else {
+    showToast('❌ الطلب متسجلش: ' + (result.message || 'حصل خطأ، جرب تاني'), true);
+  }
+});
+
+/* ===================== MODALS ===================== */
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.modal-close').forEach(btn => {
+  btn.addEventListener('click', () => closeModal(btn.dataset.close));
+});
+document.querySelectorAll('.modal-overlay').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target === ov) closeModal(ov.id); });
+});
+
+/* ===================== TOAST ===================== */
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.toggle('error', !!isError);
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), isError ? 5000 : 3000);
+}
+
+/* ===================== SCROLL REVEAL ===================== */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+}, { threshold: 0.15 });
+
+function setupReveal() { document.querySelectorAll('.reveal').forEach(el => observer.observe(el)); }
+
+/* ===================== INIT ===================== */
+(async function init() {
+  await loadProductsFromSupabase();
+  renderProducts();
+  renderCart();
+  setupReveal();
+  document.getElementById('siteLoader').classList.add('hide');
+
+  console.log('🚀 محمصة الجابري - موقع الطلب');
+  console.log('🍫 ' + PRODUCTS.length + ' منتج متوفر');
+})();
+</script>
+</body>
+</html>
