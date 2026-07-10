@@ -277,6 +277,14 @@
       <label>رقم الهاتف</label>
       <input type="tel" id="gatePhone" placeholder="01XXXXXXXXX" maxlength="11">
     </div>
+    <div class="field">
+      <label>أقرب فرع ليك <span id="gateBranchAuto" style="font-size:11px;color:#2c7a3d;font-weight:700;"></span></label>
+      <div class="toggle-row" id="gateBranchOptions">
+        <div class="toggle-opt sel" data-branch="طنطا – الجلاء – الموقف القديم">الجلاء</div>
+        <div class="toggle-opt" data-branch="بركة السبع – الشارع العمومي">بركة السبع</div>
+        <div class="toggle-opt" data-branch="السنطة – ميدان النافورة">السنطة</div>
+      </div>
+    </div>
     <div class="field-error" id="gateError">اكتب اسمك ورقم صحيح يبدأ بـ 01</div>
     <button class="submit-btn" id="gateSubmitBtn">دخول للموقع 🚀</button>
   </div>
@@ -473,11 +481,15 @@
       </div>
     </div>
     <div class="field" id="addressField" style="display:none;">
-      <label>العنوان بالتفصيل</label>
-      <textarea id="custAddress" rows="3" placeholder="اكتب عنوانك بالتفصيل عشان نوصلك بسهولة"></textarea>
-      <div class="field-error" id="addressError">من فضلك اكتب العنوان</div>
-      <button type="button" class="coupon-apply-btn" id="shareLocationBtn" style="margin-top:8px;width:100%;padding:11px;">📍 شارك موقعي الحالي (يسهّل التوصيل)</button>
-      <div id="locationStatus" style="font-size:12px;color:#2c7a3d;font-weight:700;margin-top:6px;display:none;"></div>
+      <label>موقعك على الخريطة</label>
+      <button type="button" class="coupon-apply-btn" id="shareLocationBtn" style="width:100%;padding:12px;">📍 حدد موقعك من الخريطة</button>
+      <div id="locationStatus" style="font-size:12px;color:#2c7a3d;font-weight:700;margin-top:8px;display:none;"></div>
+      <div id="locationMapWrap" style="display:none;margin-top:10px;border-radius:12px;overflow:hidden;border:1.5px solid #e9d8b9;height:180px;">
+        <iframe id="locationMapFrame" loading="lazy" style="width:100%;height:100%;border:0;"></iframe>
+      </div>
+      <div class="field-error" id="addressError">حدد موقعك من الخريطة أو اكتب أقرب علامة مميزة</div>
+      <label style="margin-top:14px;display:block;">أقرب علامة مميزة (اختياري)</label>
+      <textarea id="custAddress" rows="2" placeholder="مثال: جنب مسجد النور / عمارة زرقاء بجوار الصيدلية"></textarea>
     </div>
     <div class="field">
       <label>أي تعليمات؟ (اختياري)</label>
@@ -500,6 +512,14 @@
     <div class="field">
       <label>رقم الهاتف</label>
       <input type="tel" id="accPhone" placeholder="01XXXXXXXXX" maxlength="11">
+    </div>
+    <div class="field">
+      <label>الفرع المفضل</label>
+      <div class="toggle-row" id="accBranchOptions">
+        <div class="toggle-opt" data-branch="طنطا – الجلاء – الموقف القديم">الجلاء</div>
+        <div class="toggle-opt" data-branch="بركة السبع – الشارع العمومي">بركة السبع</div>
+        <div class="toggle-opt" data-branch="السنطة – ميدان النافورة">السنطة</div>
+      </div>
     </div>
     <div class="field-error" id="accError">اكتب اسمك ورقم صحيح يبدأ بـ 01</div>
     <button class="submit-btn" id="accSaveBtn">حفظ التعديل ✅</button>
@@ -543,19 +563,30 @@ function getSupabase() {
       وهتلاقي جوه الرد "chat":{"id":123456789...} - ده الـ CHAT ID بتاعك
    5) حط الـ TOKEN والـ CHAT ID تحت في السطرين دول واحفظ
    ============================================================ */
-const TELEGRAM_BOT_TOKEN = ''; // مثال: '123456789:ABCdefGhIJKlmNoPQRstuVwxYZ'
-const TELEGRAM_CHAT_ID = '';   // مثال: '123456789'
+const TELEGRAM_BOT_TOKEN = '8537209627:AAFd1BQQJGdHvPiQdEeujxBGW6pmJZsP2EM';
+const TELEGRAM_CHAT_ID = '1017485728';
 
 async function notifyManagerNewOrder(order) {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return; // لسه مش مفعّلة
   try {
-    const itemsTxt = order.items.map(it => `• ${it.name} (${it.unitLabel} × ${it.qty})`).join('\n');
-    const notesTxt = order.notes ? `\n📝 ملاحظات: ${order.notes}\n` : '';
+    const itemsTxt = order.items.map(it => `• ${it.name} (${it.unitLabel} × ${it.qty}) — ${it.price} جنيه`).join('\n');
+    const notesTxt = order.notes ? `📝 ملاحظات: ${order.notes}\n` : '';
+    const discountTxt = order.discount > 0 ? `🎟️ خصم: ${order.discount} جنيه${order.coupon_code ? ' (' + order.coupon_code + ')' : ''}\n` : '';
+    const fulfillmentTxt = order.fulfillment === 'pickup'
+      ? `🏃 استلام من الفرع`
+      : `🚚 توصيل\n📍 العنوان: ${order.address || '-'}`;
+
     const text =
       `🌰 أوردر جديد - محمصة الجابري\n\n` +
-      `👤 ${order.name}\n📞 ${order.phone}\n` +
-      `🚚 ${order.fulfillment === 'pickup' ? 'استلام من الفرع' : 'توصيل - ' + (order.address || '')}\n` +
-      `${notesTxt}\n${itemsTxt}\n\n💰 الإجمالي: ${order.total} جنيه`;
+      `🆔 رقم الأوردر: ${order.id}\n` +
+      `🏪 الفرع: ${order.branch || 'طنطا – الجلاء'}\n\n` +
+      `👤 الاسم: ${order.name}\n📞 الهاتف: ${order.phone}\n` +
+      `${fulfillmentTxt}\n\n` +
+      `${notesTxt}` +
+      `🛒 المنتجات:\n${itemsTxt}\n\n` +
+      `${discountTxt}` +
+      `💰 الإجمالي: ${order.total} جنيه\n` +
+      `🕒 الوقت: ${new Date(order.created_at || Date.now()).toLocaleString('ar-EG')}`;
 
     await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
@@ -717,7 +748,7 @@ const DEFAULT_PRODUCTS = [
   {id:'h6',name:'حمص محمص (400جم)',cat:'halawiyat',img:IMG.chickpea,tag:'',type:'piece',price:60,desc:'حمص محمص 400 جرام'}
 ];
 
-const STANDARD_GRAMS = [250, 500, 750, 1000];
+const STANDARD_GRAMS = [125, 250, 500, 750, 1000];
 const PREMIUM_GRAMS = [100, 200, 300, 400, 500, 1000];
 const WEIGHT_CATS = ['mekassarat', 'lab', 'mojaffafat'];
 const STATUS_LABELS = { prep: 'قيد التحضير', ready: 'جاهز', done: 'تم التسليم' };
@@ -755,14 +786,77 @@ function hideDiagBanner() { document.getElementById('diagBanner').classList.remo
    البيانات خالص، عشان محافظين على مساحة الـ 500 ميجا المجانية.
    Built with ❤️ by programmer Malik El-Bialy · 📱 +20 11 25523286
    ============================================================ */
+/* ============================================================
+   الفروع الثلاثة + تحديد أقرب فرع تلقائيًا بالموقع
+   Built with ❤️ by programmer Malik El-Bialy · 📱 +20 11 25523286
+   ============================================================ */
+const BRANCHES = [
+  { name: 'طنطا – الجلاء – الموقف القديم', lat: 30.7865, lng: 31.0004 },
+  { name: 'بركة السبع – الشارع العمومي', lat: 30.6172, lng: 30.9333 },
+  { name: 'السنطة – ميدان النافورة', lat: 30.7333, lng: 31.1667 }
+];
+
+function distanceKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function selectBranchInGroup(groupEl, branchName) {
+  groupEl.querySelectorAll('.toggle-opt').forEach(el => {
+    el.classList.toggle('sel', el.dataset.branch === branchName);
+  });
+}
+
+function setupBranchToggle(groupId) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  group.querySelectorAll('.toggle-opt').forEach(opt => {
+    opt.addEventListener('click', () => selectBranchInGroup(group, opt.dataset.branch));
+  });
+}
+setupBranchToggle('gateBranchOptions');
+setupBranchToggle('accBranchOptions');
+
+function getSelectedBranch(groupId) {
+  const group = document.getElementById(groupId);
+  const sel = group ? group.querySelector('.toggle-opt.sel') : null;
+  return sel ? sel.dataset.branch : BRANCHES[0].name;
+}
+
+// تحديد أقرب فرع تلقائي بالموقع (لو العميل سمح بالموقع)، بهدوء من غير ما يعطل حاجة
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const { latitude, longitude } = pos.coords;
+      let nearest = BRANCHES[0], minDist = Infinity;
+      BRANCHES.forEach(b => {
+        const d = distanceKm(latitude, longitude, b.lat, b.lng);
+        if (d < minDist) { minDist = d; nearest = b; }
+      });
+      selectBranchInGroup(document.getElementById('gateBranchOptions'), nearest.name);
+      const autoEl = document.getElementById('gateBranchAuto');
+      if (autoEl) autoEl.textContent = `(حددنا ${nearest.name.split('–')[0].trim()} تلقائي)`;
+    },
+    () => {}, // العميل رفض أو مفيش موقع - يفضل الاختيار الافتراضي
+    { timeout: 5000 }
+  );
+}
+
 function getCustomerIdentity() {
   try {
     const raw = localStorage.getItem('jabri_customer');
     return raw ? JSON.parse(raw) : null;
   } catch (e) { return null; }
 }
-function saveCustomerIdentity(name, phone) {
-  try { localStorage.setItem('jabri_customer', JSON.stringify({ name, phone })); } catch (e) {}
+function saveCustomerIdentity(name, phone, branch) {
+  try {
+    const existing = getCustomerIdentity() || {};
+    const finalBranch = branch || existing.branch || BRANCHES[0].name;
+    localStorage.setItem('jabri_customer', JSON.stringify({ name, phone, branch: finalBranch }));
+  } catch (e) {}
   refreshAccountBtn();
 }
 function refreshAccountBtn() {
@@ -787,7 +881,8 @@ document.getElementById('gateSubmitBtn').addEventListener('click', () => {
     return;
   }
   errEl.classList.remove('show');
-  saveCustomerIdentity(name, phone);
+  const branch = getSelectedBranch('gateBranchOptions');
+  saveCustomerIdentity(name, phone, branch);
   document.getElementById('customerGate').style.display = 'none';
 });
 document.getElementById('gatePhone').addEventListener('keydown', e => {
@@ -799,6 +894,7 @@ document.getElementById('accountBtn').addEventListener('click', () => {
   const identity = getCustomerIdentity();
   document.getElementById('accName').value = identity ? identity.name || '' : '';
   document.getElementById('accPhone').value = identity ? identity.phone || '' : '';
+  selectBranchInGroup(document.getElementById('accBranchOptions'), (identity && identity.branch) || BRANCHES[0].name);
   document.getElementById('accError').classList.remove('show');
   openModal('accountModal');
 });
@@ -811,7 +907,8 @@ document.getElementById('accSaveBtn').addEventListener('click', () => {
     return;
   }
   errEl.classList.remove('show');
-  saveCustomerIdentity(name, phone);
+  const branch = getSelectedBranch('accBranchOptions');
+  saveCustomerIdentity(name, phone, branch);
   closeModal('accountModal');
   showToast('✅ اتحفظت بياناتك');
 });
@@ -876,7 +973,7 @@ async function saveOrderToSupabase(order) {
     customer_name: order.name,
     phone: order.phone,
     fulfillment: order.fulfillment,
-    branch: 'طنطا – الجلاء – الموقف القديم',
+    branch: order.branch || 'طنطا – الجلاء – الموقف القديم',
     address: order.address || '',
     total: order.total,
     items: order.items,
@@ -966,7 +1063,7 @@ async function cleanupOldOrders() {
       if (doomed && doomed.length > 0) {
         const archiveRows = doomed.map(o => ({
           id: o.id, created_at: o.created_at, customer_name: o.customer_name, phone: o.phone,
-          fulfillment: o.fulfillment, address: o.address, notes: o.notes || '', items: o.items,
+          fulfillment: o.fulfillment, branch: o.branch || '', address: o.address, notes: o.notes || '', items: o.items,
           total: o.total, discount: o.discount || 0, coupon_code: o.coupon_code || null,
           status: o.status, rating: o.rating || null
         }));
@@ -1193,12 +1290,15 @@ document.getElementById('optDelivery').addEventListener('click', () => {
 });
 
 /* ===================== SHARE LOCATION (precise delivery pin) =====================
-   بيضيف رابط بتاع الموقع الفعلي (جوجل مابس) جوه خانة العنوان، من غير ما نحتاج
-   نعدل قاعدة البيانات خالص — الرابط بيبان تلقائي في لوحة التحكم كـ زرار "افتح الموقع"
+   بياخد موقع العميل من الخريطة بس (مش بيتحط جوه خانة العنوان)، وبيعرضله
+   خريطة مصغّرة يتأكد منها، ولينك جوجل مابس بيتبعت منفصل عن وصف العلامة
    Built with ❤️ by programmer Malik El-Bialy · 📱 +20 11 25523286
    ==================================================================== */
+let customerMapsLink = null;
+
 document.getElementById('shareLocationBtn').addEventListener('click', () => {
   const statusEl = document.getElementById('locationStatus');
+  const mapWrap = document.getElementById('locationMapWrap');
   if (!navigator.geolocation) {
     statusEl.style.display = 'block';
     statusEl.style.color = 'var(--red)';
@@ -1212,16 +1312,20 @@ document.getElementById('shareLocationBtn').addEventListener('click', () => {
     (pos) => {
       const lat = pos.coords.latitude.toFixed(6);
       const lng = pos.coords.longitude.toFixed(6);
-      const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
-      const addressEl = document.getElementById('custAddress');
-      const existing = addressEl.value.replace(/\n?📍 موقعي على الخريطة: https:\/\/www\.google\.com\/maps\?q=[^\s]+/, '').trim();
-      addressEl.value = (existing ? existing + '\n' : '') + '📍 موقعي على الخريطة: ' + mapsLink;
+      customerMapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
+
+      const d = 0.004; // نطاق صغير حوالين النقطة للخريطة المصغّرة
+      const bbox = `${parseFloat(lng) - d},${parseFloat(lat) - d},${parseFloat(lng) + d},${parseFloat(lat) + d}`;
+      document.getElementById('locationMapFrame').src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&marker=${lat},${lng}`;
+      mapWrap.style.display = 'block';
+
       statusEl.style.color = '#2c7a3d';
-      statusEl.textContent = '✅ اتضاف موقعك الدقيق للعنوان';
+      statusEl.textContent = '✅ اتحدد موقعك بالظبط على الخريطة';
+      document.getElementById('addressError').classList.remove('show');
     },
     (err) => {
       statusEl.style.color = 'var(--red)';
-      statusEl.textContent = '❌ مقدرناش نجيب موقعك، اكتب العنوان يدوي أو جرب تاني';
+      statusEl.textContent = '❌ مقدرناش نجيب موقعك، اكتب أقرب علامة تحت أو جرب تاني';
     },
     { enableHighAccuracy: true, timeout: 10000 }
   );
@@ -1253,9 +1357,17 @@ document.getElementById('confirmOrderBtn').addEventListener('click', async () =>
 
   let address = '';
   if (fulfillment === 'delivery') {
-    address = document.getElementById('custAddress').value.trim();
-    if (!address) { document.getElementById('addressError').classList.add('show'); ok = false; }
-    else document.getElementById('addressError').classList.remove('show');
+    const landmark = document.getElementById('custAddress').value.trim();
+    if (!customerMapsLink && !landmark) {
+      document.getElementById('addressError').classList.add('show');
+      ok = false;
+    } else {
+      document.getElementById('addressError').classList.remove('show');
+      const parts = [];
+      if (customerMapsLink) parts.push('📍 الموقع على الخريطة: ' + customerMapsLink);
+      if (landmark) parts.push('🏷️ أقرب علامة: ' + landmark);
+      address = parts.join('\n');
+    }
   }
   if (!ok) return;
 
@@ -1275,10 +1387,12 @@ document.getElementById('confirmOrderBtn').addEventListener('click', async () =>
   const subtotal = cartSubtotal();
   const discount = appliedCoupon ? computeDiscount(subtotal, appliedCoupon) : 0;
   const notes = document.getElementById('custNotes').value.trim();
+  const customerBranch = (getCustomerIdentity() || {}).branch || BRANCHES[0].name;
 
   const order = {
     id: generateOrderId(),
     name, phone, fulfillment, address, notes,
+    branch: customerBranch,
     items: cart.map(c => ({ name: c.name, unitLabel: c.unitLabel, qty: c.qty || 1, price: c.price })),
     total: subtotal - discount,
     coupon_code: appliedCoupon ? appliedCoupon.code : null,
@@ -1301,6 +1415,9 @@ document.getElementById('confirmOrderBtn').addEventListener('click', async () =>
     document.getElementById('custPhone').value = '';
     document.getElementById('custAddress').value = '';
     document.getElementById('custNotes').value = '';
+    customerMapsLink = null;
+    document.getElementById('locationMapWrap').style.display = 'none';
+    document.getElementById('locationStatus').style.display = 'none';
     showToast('✅ طلبك اتسجل بنجاح! هنكلمك حالاً');
   } else {
     showToast('❌ الطلب متسجلش: ' + (result.message || 'حصل خطأ، جرب تاني'), true);
